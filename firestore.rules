@@ -1,0 +1,254 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 0;
+    }
+
+    function isStoreAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 1;
+    }
+
+    function isSupportAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 2;
+    }
+
+    function isOperator() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/operators/$(request.auth.uid));
+    }
+
+    function isSuperOperator() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/operators/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/operators/$(request.auth.uid)).data.role == 0;
+    }
+
+    function isRegularOperator() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/operators/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/operators/$(request.auth.uid)).data.role == 1;
+    }
+
+    function getOperatorStoreId() {
+      return get(/databases/$(database)/documents/operators/$(request.auth.uid)).data.storeId;
+    }
+
+    function getAdminStoreId() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.storeId;
+    }
+
+    function hasPermission(permission) {
+      return isAuthenticated() &&
+             (get(/databases/$(database)/documents/operators/$(request.auth.uid)).data.get(permission, false) == true ||
+              get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.get(permission, false) == true);
+    }
+
+    // Admin Users Collection
+    match /admins/{adminId} {
+      // Allow read/write for super admins
+      allow read, write: if isSuperAdmin();
+
+      // Allow users to read/write their own admin profile
+      allow read, write: if isOwner(adminId) && isAdmin();
+
+      // Allow store admins to read/write if they belong to the same store
+      allow read: if isStoreAdmin() && getAdminStoreId() == resource.data.storeId;
+      allow write: if isStoreAdmin() && getAdminStoreId() == resource.data.storeId && adminId == request.auth.uid;
+    }
+
+    // Stores Collection
+    match /stores/{storeId} {
+      // Super admins can read/write all stores
+      allow read, write: if isSuperAdmin();
+
+      // Store admins can read/write their own store
+      allow read: if isStoreAdmin() && getAdminStoreId() == storeId;
+      allow write: if isStoreAdmin() && getAdminStoreId() == storeId && storeId == request.auth.uid;
+
+      // Operators can read stores they're assigned to
+      allow read: if isOperator() && getOperatorStoreId() == storeId;
+
+      // Allow store creation by super admins only
+      allow create: if isSuperAdmin() && isAuthenticated();
+    }
+
+    // Operators Collection
+    match /operators/{operatorId} {
+      // Super operators can read/write all operators
+      allow read, write: if isSuperOperator();
+
+      // Operators can read/write their own profile
+      allow read, write: if isOwner(operatorId) && isOperator();
+
+      // Allow operator creation by super operators only
+      allow create: if isSuperOperator() && isAuthenticated();
+
+      // Allow admins to read operators (for management)
+      allow read: if isAdmin();
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Allow read/write for authenticated users with proper permissions
+      allow read: if isAuthenticated() && (
+        hasPermission('view_all_orders') ||
+        hasPermission('view_assigned_orders') ||
+        isOwner(resource.data.userId) ||
+        (isOperator() && getOperatorStoreId() == resource.data.storeId) ||
+        (isStoreAdmin() && getAdminStoreId() == resource.data.storeId)
+      );
+
+      allow write: if isAuthenticated() && (
+        hasPermission('manage_own_orders') ||
+        hasPermission('manage_all_orders') ||
+        isOwner(resource.data.userId) ||
+        (isOperator() && getOperatorStoreId() == resource.data.storeId) ||
+        (isStoreAdmin() && getAdminStoreId() == resource.data.storeId)
+      );
+
+      allow create: if isAuthenticated() && (
+        hasPermission('create_orders') ||
+        isOwner(request.resource.data.userId)
+      );
+    }
+
+    // Users Collection (Mobile App)
+    match /users/{userId} {
+      // Users can read/write their own profile
+      allow read, write: if isOwner(userId);
+
+      // Allow operators and admins to read user profiles for order management
+      allow read: if isOperator() || isAdmin();
+
+      // Allow creation of user profiles
+      allow create: if isAuthenticated();
+    }
+
+    // Support Chat Collection
+    match /support_chats/{chatId} {
+      // Allow read/write for participants and support staff
+      allow read, write: if isAuthenticated() && (
+        isOwner(resource.data.userId) ||
+        isOwner(resource.data.operatorId) ||
+        hasPermission('manage_support') ||
+        isSupportAdmin()
+      );
+
+      allow create: if isAuthenticated() && (
+        isOwner(request.resource.data.userId) ||
+        hasPermission('manage_support') ||
+        isSupportAdmin()
+      );
+    }
+
+    // Support Messages Collection
+    match /support_messages/{messageId} {
+      // Allow read/write for chat participants and support staff
+      allow read, write: if isAuthenticated() && (
+        isOwner(resource.data.userId) ||
+        isOwner(resource.data.operatorId) ||
+        hasPermission('manage_support') ||
+        isSupportAdmin()
+      );
+
+      allow create: if isAuthenticated() && (
+        isOwner(request.resource.data.userId) ||
+        hasPermission('manage_support') ||
+        isSupportAdmin()
+      );
+    }
+
+    // Notifications Collection
+    match /notifications/{notificationId} {
+      // Users can read their own notifications
+      allow read: if isOwner(resource.data.userId);
+
+      // Operators and admins can read notifications for their store
+      allow read: if isOperator() && getOperatorStoreId() == resource.data.storeId;
+      allow read: if isAdmin() && getAdminStoreId() == resource.data.storeId;
+
+      // Allow creation of notifications by operators and admins
+      allow create: if isOperator() || isAdmin();
+
+      // Allow deletion of notifications by owners and admins
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    // Analytics Collection
+    match /analytics/{analyticsId} {
+      // Only admins with analytics permission can read analytics
+      allow read: if isAdmin() && hasPermission('view_analytics');
+
+      // Only super admins can write analytics data
+      allow write: if isSuperAdmin();
+    }
+
+    // Settings Collection
+    match /settings/{settingId} {
+      // Only admins can read/write settings
+      allow read, write: if isAdmin() && hasPermission('manage_settings');
+    }
+
+    // Activity Logs Collection
+    match /activity_logs/{logId} {
+      // Only admins can read activity logs
+      allow read: if isAdmin();
+
+      // Only system can write activity logs
+      allow write: if isSuperAdmin() || hasPermission('manage_logs');
+    }
+
+    // Operator Incidents Collection
+    match /operator_incidents/{incidentId} {
+      // Only admins can read incidents
+      allow read: if isAdmin();
+
+      // Only operators can create incidents for themselves
+      allow create: if isOperator() && isOwner(request.resource.data.operatorId);
+
+      // Only super admins can modify incidents
+      allow write: if isSuperAdmin();
+    }
+
+    // FCM Tokens Collection
+    match /fcm_tokens/{tokenId} {
+      // Users can read/write their own tokens
+      allow read, write: if isOwner(tokenId);
+
+      // Allow creation of tokens during registration
+      allow create: if isAuthenticated();
+    }
+
+    // Public Data (Read-only for all authenticated users)
+    match /public/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

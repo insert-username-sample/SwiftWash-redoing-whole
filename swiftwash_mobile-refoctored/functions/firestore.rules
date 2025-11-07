@@ -1,0 +1,154 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Users Collection (Mobile App Users)
+    match /users/{userId} {
+      // Users can read/write their own profile
+      allow read, write: if isOwner(userId);
+
+      // Admins can read all user profiles for management
+      allow read: if isAdmin();
+
+      // Allow creation of user profiles during registration
+      allow create: if isAuthenticated();
+    }
+
+    // Addresses Collection
+    match /addresses/{addressId} {
+      // Users can read/write their own addresses
+      allow read, write: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Admins can read all addresses for management
+      allow read: if isAdmin();
+
+      // Allow creation of addresses by authenticated users
+      allow create: if isAuthenticated() && isOwner(request.resource.data.userId);
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Users can read their own orders
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Users can create orders
+      allow create: if isAuthenticated() && isOwner(request.resource.data.userId);
+
+      // Users can update their own orders (for cancellation, etc.)
+      allow write: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Admins can read/write all orders for management
+      allow read, write: if isAdmin();
+    }
+
+    // Admins Collection (Management App Users)
+    match /admins/{adminId} {
+      // Admins can read/write their own profile
+      allow read, write: if isOwner(adminId) && isAdmin();
+
+      // Super admins can read all admin profiles
+      allow read: if isAdmin();
+
+      // Allow creation of admin profiles (only by existing admins)
+      allow create: if isAdmin() && isOwner(adminId);
+    }
+
+    // Drivers Collection (Delivery Personnel)
+    match /drivers/{driverId} {
+      // Drivers can read/write their own profile
+      allow read, write: if isOwner(driverId) && isAuthenticated();
+
+      // Admins can read/write all driver profiles for management
+      allow read, write: if isAdmin();
+
+      // Allow driver creation during onboarding
+      allow create: if isAuthenticated() && isOwner(driverId);
+    }
+
+    // Subscriptions Collection (Premium Users)
+    match /subscriptions/{subscriptionId} {
+      // Users can read their own subscriptions
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Users can create subscriptions
+      allow create: if isAuthenticated() && isOwner(request.resource.data.userId);
+
+      // Admins can read all subscriptions for management
+      allow read: if isAdmin();
+    }
+
+    // Support Collections (Customer Support)
+    match /support_chats/{chatId} {
+      // Users can read/write their own support chats
+      allow read, write: if isAuthenticated() && (
+        isOwner(resource.data.userId) ||
+        isOwner(resource.data.adminId)
+      );
+
+      // Admins can read/write all support chats
+      allow read, write: if isAdmin();
+
+      // Allow creation of support chats
+      allow create: if isAuthenticated();
+    }
+
+    match /support_messages/{messageId} {
+      // Users can read/write messages in their support chats
+      allow read, write: if isAuthenticated() && (
+        isOwner(resource.data.userId) ||
+        isOwner(resource.data.adminId)
+      );
+
+      // Admins can read/write all support messages
+      allow read, write: if isAdmin();
+
+      // Allow creation of support messages
+      allow create: if isAuthenticated();
+    }
+
+    // Notifications Collection
+    match /notifications/{notificationId} {
+      // Users can read their own notifications
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Users can delete their own notifications
+      allow delete: if isAuthenticated() && isOwner(resource.data.userId);
+
+      // Admins can create notifications for users
+      allow create: if isAdmin();
+
+      // Admins can read all notifications
+      allow read: if isAdmin();
+    }
+
+    // System Configuration (Admin Only)
+    match /system/{document=**} {
+      // Only admins can read/write system configuration
+      allow read, write: if isAdmin();
+    }
+
+    // Public Data (Read-only for all authenticated users)
+    match /public/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

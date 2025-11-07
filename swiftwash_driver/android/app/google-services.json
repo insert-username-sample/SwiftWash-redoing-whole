@@ -1,0 +1,191 @@
+{
+  "project_info": {
+    "project_number": "926846064467",
+    "firebase_url": "https://swiftwash-v0-1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "swiftwash-v0-1",
+    "storage_bucket": "swiftwash-v0-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926846064467:android:980fa0d09f24c8461a73a6",
+        "android_client_info": {
+          "package_name": "com.example.swiftwash_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926846064467-fa4h1oejqcoglsn3btse3i4dfu50pa20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.swiftwash_driver",
+            "certificate_hash": "6cd3167f2a36b2e042a749da5d166b48fbe60767"
+          }
+        },
+        {
+          "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4HDJDdz3eVlm7ghCfEBahNEh-4s7ACQI"
+        },
+        {
+          "current_key": "AIzaSyBRDqcI8o-BM85YNr-OhzzDlynqGe3GMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926846064467-2codmpuqf5cce0cf88lnpddsjiffil0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.swiftwashMobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926846064467:android:99c9f8dda987d2df1a73a6",
+        "android_client_info": {
+          "package_name": "com.example.swiftwash_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926846064467-lq6aa5q8cpk5dk2d4b46ttjb014gjs5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.swiftwash_mobile",
+            "certificate_hash": "6cd3167f2a36b2e042a749da5d166b48fbe60767"
+          }
+        },
+        {
+          "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4HDJDdz3eVlm7ghCfEBahNEh-4s7ACQI"
+        },
+        {
+          "current_key": "AIzaSyBRDqcI8o-BM85YNr-OhzzDlynqGe3GMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926846064467-2codmpuqf5cce0cf88lnpddsjiffil0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.swiftwashMobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926846064467:android:414d3a04734d30d91a73a6",
+        "android_client_info": {
+          "package_name": "com.example.swiftwash_operator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926846064467-mqksq9k43b2uv5do3n0qhr6orqbofl7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.swiftwash_operator",
+            "certificate_hash": "6cd3167f2a36b2e042a749da5d166b48fbe60767"
+          }
+        },
+        {
+          "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4HDJDdz3eVlm7ghCfEBahNEh-4s7ACQI"
+        },
+        {
+          "current_key": "AIzaSyBRDqcI8o-BM85YNr-OhzzDlynqGe3GMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926846064467-2codmpuqf5cce0cf88lnpddsjiffil0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.swiftwashMobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926846064467:android:475715b61a77c2c21a73a6",
+        "android_client_info": {
+          "package_name": "com.swiftwash.swiftwash_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4HDJDdz3eVlm7ghCfEBahNEh-4s7ACQI"
+        },
+        {
+          "current_key": "AIzaSyBRDqcI8o-BM85YNr-OhzzDlynqGe3GMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926846064467-stpgfgpa1vdbnmm33p72nlt12otm5btv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926846064467-2codmpuqf5cce0cf88lnpddsjiffil0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.swiftwashMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

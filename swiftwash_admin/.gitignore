@@ -1,0 +1,51 @@
+# Flutter
+.dart_tool/
+.packages
+.pub/
+build/
+flutter_*.png
+ios/Flutter/.last_build_id
+android/.gradle/
+android/app/build/
+android/app/google-services.json
+
+# Environment files
+.env
+.env.prod
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+
+# API keys and secrets (should never be committed)
+api_keys.json
+secrets.json
+config/production.json
+
+# Screenshots
+screenshots/
+
+# Documentation builds
+doc/api/

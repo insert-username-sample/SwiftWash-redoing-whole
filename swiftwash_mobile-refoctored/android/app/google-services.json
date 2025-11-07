@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926846064467",
+    "project_id": "swiftwash-v0-1",
+    "storage_bucket": "swiftwash-v0-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926846064467:android:99c9f8dda987d2df1a73a6",
+        "android_client_info": {
+          "package_name": "com.example.swiftwash_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRDqcI8o-BM85YNr-OhzzDlynqGe3GMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin/operator using custom claims
+    function isAdmin() {
+      return request.auth != null &&
+             (request.auth.token.customClaims.admin == true ||
+              request.auth.token.customClaims.operator == true ||
+              request.auth.token.customClaims.staff == true ||
+              request.auth.token.admin == true); // Legacy support
+    }
+
+    // Rate limiting helper (simplified)
+    function withinRateLimit(maxWrites) {
+      return true; // Rate limiting handled in functions, not rules
+    }
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Orders - enhanced security with role-based access
+    match /orders/{orderId} {
+      // Users can read/write their own orders, operators can read/write all orders
+      allow read: if isAuthenticated() &&
+                   (request.auth.uid == resource.data.userId ||
+                    isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() &&
+                    (request.auth.uid == resource.data.userId ||
+                     isAdmin());
+
+      // Enhanced sub-collections for comprehensive tracking
+      match /statusHistory/{historyId} {
+        allow read: if isAuthenticated() &&
+                           (request.auth.uid == resource.data.userId ||
+                            isAdmin());
+        allow write: if isAdmin();
+      }
+
+      match /processingHistory/{processId} {
+        allow read, write: if isAuthenticated() && isAdmin();
+      }
+
+      match /routes/{phase} {
+        allow read: if isAuthenticated() &&
+                           (request.auth.uid == resource.data.userId ||
+                            isAdmin());
+        allow write: if isAdmin();
+      }
+
+      match /gpsTracking/{trackingId} {
+        allow read: if isAuthenticated() &&
+                           (request.auth.uid == resource.data.userId ||
+                            isAdmin());
+        allow write: if isAdmin();
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if isAuthenticated() && resource.data.recipientId == request.auth.uid;
+        allow write: if isAdmin();
+      }
+    }
+
+    // Drivers collection - operators need full access
+    match /drivers/{driverId} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+
+    // Users collection - self access only
+    match /users/{userId} {
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && request.auth.uid == userId &&
+                    request.resource.data.keys().hasOnly(['fcmToken', 'displayName', 'photoURL']);
+    }
+
+    // User addresses - self access only
+    match /users/{userId}/addresses/{addressId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Admin/Operator specific collections
+    match /operators/{operatorId} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+
+    match /staff/{staffId} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+
+    // Support chat system - customers can create requests, operators can manage all
+    match /support_chats/{chatId} {
+      allow create: if isAuthenticated(); // Customers can create support requests
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid == resource.data.customerId ||
+                      isAdmin()); // Customers can read their own chats, operators can read all
+      allow update: if isAuthenticated() && isAdmin(); // Only operators can update chat status
+    }
+
+    match /support_messages/{messageId} {
+      allow create: if isAuthenticated(); // Both customers and operators can create messages
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid == resource.data.customerId ||
+                      request.auth.uid == resource.data.operatorId ||
+                      isAdmin()); // Users can read messages from their chats
+      allow update: if isAuthenticated() &&
+                      (request.auth.uid == resource.data.senderId ||
+                       isAdmin()); // Users can update their own messages, operators can update any
+    }
+
+    // Operator incidents for monitoring
+    match /operator_incidents/{incidentId} {
+      allow create: if isAuthenticated() && isAdmin();
+      allow read: if isAuthenticated() && isAdmin();
+    }
+  }
+}

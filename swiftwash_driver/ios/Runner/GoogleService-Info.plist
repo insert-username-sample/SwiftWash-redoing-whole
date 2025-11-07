@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>926846064467-o8dup75ulntptptambmit5dkfkdmqahq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.926846064467-o8dup75ulntptptambmit5dkfkdmqahq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>926846064467-fa4h1oejqcoglsn3btse3i4dfu50pa20.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAok-PghJE5YoW3MbePIKcjyVyvNjqINUU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>926846064467</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.swiftwashDriver</string>
+	<key>PROJECT_ID</key>
+	<string>swiftwash-v0-1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>swiftwash-v0-1.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:926846064467:ios:c2440537dd6b86411a73a6</string>
+	<key>DATABASE_URL</key>
+	<string>https://swiftwash-v0-1-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>

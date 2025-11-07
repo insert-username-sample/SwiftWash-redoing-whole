@@ -1,0 +1,28 @@
+{
+  "format": "A4",
+  "header": {
+    "height": "20mm",
+    "contents": "<div style='text-align: center; font-size: 14px; font-weight: bold;'>SwiftWash Order ID Generation Specification</div>"
+  },
+  "footer": {
+    "height": "15mm",
+    "contents": "<div style='text-align: center; font-size: 10px;'>Page {{page}} of {{pages}}</div>"
+  },
+  "css": [
+    "body { font-family: 'Arial', sans-serif; font-size: 12px; line-height: 1.6; color: #333; }",
+    "h1 { font-size: 24px; font-weight: bold; color: #2c3e50; margin-top: 20px; margin-bottom: 10px; border-bottom: 2px solid #3498db; padding-bottom: 5px; }",
+    "h2 { font-size: 20px; font-weight: bold; color: #34495e; margin-top: 18px; margin-bottom: 8px; }",
+    "h3 { font-size: 16px; font-weight: bold; color: #7f8c8d; margin-top: 15px; margin-bottom: 6px; }",
+    "h4 { font-size: 14px; font-weight: bold; color: #95a5a6; margin-top: 12px; margin-bottom: 5px; }",
+    "p { margin-bottom: 12px; text-align: justify; }",
+    "strong, b { font-weight: bold; color: #2c3e50; }",
+    "code { font-family: 'Courier New', monospace; background-color: #f8f9fa; padding: 2px 4px; border-radius: 3px; font-size: 11px; }",
+    "pre { background-color: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #3498db; margin: 15px 0; overflow-x: auto; }",
+    "ul, ol { margin: 10px 0; padding-left: 25px; }",
+    "li { margin-bottom: 5px; }",
+    "table { width: 100%; border-collapse: collapse; margin: 15px 0; }",
+    "th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }",
+    "th { background-color: #f8f9fa; font-weight: bold; color: #2c3e50; }",
+    "tr:nth-child(even) { background-color: #f9f9f9; }"
+  ]
+}
