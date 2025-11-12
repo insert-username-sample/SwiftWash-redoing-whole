@@ -1,0 +1,37 @@
+connectorId: example
+generate:
+  dartSdk:
+    - outputDir: ..\..\swiftwash_operator\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+    - outputDir: ..\..\swiftwash_mobile-refoctored\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+    - outputDir: ..\..\swiftwash_driver\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+    - outputDir: ..\..\swiftwash_mobile\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+    - outputDir: ..\..\swiftwash_admin\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+    - outputDir: ..\..\swiftwash_mobile\swiftwash_mobile\lib\dataconnect_generated
+      package: dataconnect_generated/generated.dart
+  javascriptSdk:
+    - outputDir: ..\..\src\dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ..\..
+      react: false
+      angular: false
+  adminNodeSdk:
+    - outputDir: ..\..\swiftwash\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\swiftwash
+    - outputDir: ..\..\functions\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\functions
+    - outputDir: ..\..\swiftwash_mobile-refoctored\functions\swiftwash-alpha\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\swiftwash_mobile-refoctored\functions\swiftwash-alpha
+    - outputDir: ..\..\swiftwash_mobile\functions\swiftwash-alpha\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\swiftwash_mobile\functions\swiftwash-alpha
+    - outputDir: ..\..\swiftwash-redo\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\swiftwash-redo

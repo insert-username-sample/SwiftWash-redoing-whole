@@ -66,6 +66,9 @@ service cloud.firestore {
 
     // Admin Users Collection
     match /admins/{adminId} {
+      // Allow unauthenticated read access for authentication purposes
+      allow read: if true;
+
       // Allow read/write for super admins
       allow read, write: if isSuperAdmin();
 
@@ -143,6 +146,12 @@ service cloud.firestore {
 
       // Allow creation of user profiles
       allow create: if isAuthenticated();
+
+      // Addresses subcollection - Users can read/write their own addresses
+      match /addresses/{addressId} {
+        allow read, write, create: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
     }
 
     // Support Chat Collection

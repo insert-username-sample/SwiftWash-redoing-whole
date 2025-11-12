@@ -1,0 +1,47 @@
+type User @table {
+  displayName: String!
+  email: String!
+  phoneNumber: String!
+  address: String!
+  city: String!
+  zipCode: String!
+  photoUrl: String
+  apartmentNumber: String
+}
+
+type LaundryItem @table {
+  name: String!
+  itemType: String!
+  defaultPrice: Float!
+  description: String
+  specialCareInstructions: String
+}
+
+type CleaningPreference @table {
+  user: User!
+  laundryItem: LaundryItem!
+  cleaningMethod: String!
+  detergentType: String
+  softenerType: String
+  temperatureSetting: String
+  starchLevel: String
+}
+
+type Order @table {
+  user: User!
+  orderDate: Timestamp!
+  status: String!
+  pickUpDate: Timestamp!
+  deliveryDate: Timestamp!
+  totalAmount: Float!
+  specialInstructions: String
+  promoCode: String
+}
+
+type OrderItem @table {
+  order: Order!
+  laundryItem: LaundryItem!
+  quantity: Int!
+  unitPrice: Float!
+  notes: String
+}
